@@ -61,7 +61,7 @@ impl<R: Read> BytesLines<R> {
         BytesLines {
             reader,
             state: State::Scanning(Sep::NewLine),
-            buf: BytesMut::with_capacity(chunk_size),
+            buf: BytesMut::with_capacity(CHUNK_SIZE),
             line_count: 0,
         }
     }

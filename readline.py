@@ -7,7 +7,7 @@ def logfile_iterator(reader):
         line = reader.readline()
         if not line:
             break
-        line = line[:-1]
+        line = line.rstrip()
         pos += 1
         for subline in line.split("\\n"):
             yield (subline, pos)

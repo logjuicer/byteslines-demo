@@ -5,32 +5,22 @@ use std::io::Read;
 use std::io::Result;
 use std::io::{BufRead, BufReader};
 
+/// A struct to hold the state of the iterator.
 pub struct BufLines<R: Read> {
     reader: BufReader<R>,
     buffer: String,
     line_number: usize,
 }
 
-type LogLine = (String, usize);
-
+/// The Iterator implementation.
 impl<R: Read> Iterator for BufLines<R> {
-    type Item = Result<LogLine>;
+    type Item = Result<(String, usize)>;
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.buffer.is_empty() {
-            match self.reader.read_line(&mut self.buffer) {
-                Ok(n) if n > 0 => {
-                    self.buffer = self
-                        .buffer
-                        .trim_end_matches(|c| matches!(c, '\n' | '\r'))
-                        .to_owned();
-                    self.get_line()
-                }
-                Ok(_) => None,
-                Err(e) => Some(Err(e)),
-            }
+            self.read_line()
         } else {
-            self.get_line()
+            Some(Ok(self.get_line()))
         }
     }
 }
@@ -44,22 +34,33 @@ impl<R: Read> BufLines<R> {
         }
     }
 
-    fn get_line(&mut self) -> Option<Result<LogLine>> {
+    fn read_line(&mut self) -> Option<Result<(String, usize)>> {
+        match self.reader.read_line(&mut self.buffer) {
+            Ok(n) if n > 0 => {
+                // The read succeeded
+                self.buffer = self.buffer.trim_end().to_owned();
+                Some(Ok(self.get_line()))
+            }
+            Ok(_) => None,
+            Err(e) => Some(Err(e)),
+        }
+    }
+
+    // Return the first sub line found in the buffer.
+    fn get_line(&mut self) -> (String, usize) {
         let line = if let Some((sub_line, rest)) = self.buffer.split_once("\\n") {
-            let line = sub_line.to_owned();
+            let sub_line = sub_line.to_owned();
             self.buffer = rest.to_owned();
-            line
+            sub_line
         } else {
             self.line_number += 1;
-            // Here the buffer is copied to return a String
             let line = self.buffer.clone();
             self.buffer.clear();
             line
         };
-        Some(Ok((line, self.line_number)))
+        (line, self.line_number)
     }
 }
-
 
 pub fn main() {
     let stdin = std::io::stdin();

@@ -25,8 +25,10 @@ $ valgrind true |& grep "total heap usage"
 
 ## Results:
 
+Using `Python 3.10.2` and `rustc 1.52.1`:
+
 | Implementation | Max RSS  | Allocs    | Frees     | Bytes allocated | Run time |
 |----------------|----------|-----------|-----------|-----------------|----------|
-| readline.py    | 11280 KB | 1,814,409 | 1,810,434 |     475,434,838 | 0.49 sec |
+| readline.py    |  7420 KB | 1,814,409 | 1,810,434 |     475,434,838 | 0.33 sec |
 | readline.rs    |  2260 KB |   692,114 |   692,112 |     285,799,923 | 0.15 sec |
 | byteslines.rs  |  2068 KB |        24 |        22 |         265,577 | 0.12 sec |
