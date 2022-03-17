@@ -10,6 +10,10 @@ edition = "2018"
 bytes = "1.1"
 
 [[bin]]
+name = "lines"
+path = "lines.rs"
+
+[[bin]]
 name = "readline"
 path = "readline.rs"
 

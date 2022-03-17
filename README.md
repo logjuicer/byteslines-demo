@@ -8,6 +8,7 @@ The goals of this iterator are:
 
 Here are some benchmark implementation:
 
+- [lines.rs](./lines.rs): Rust lines benchmark (which doesn't split sub-lines)
 - [readline.py](./readline.py): Python readline
 - [readline.rs](./readline.rs): Rust read_line
 - [byteslines.rs](./byteslines.rs): Zero copy implementation using [Bytes](https://docs.rs/bytes/):
@@ -29,6 +30,7 @@ Using `Python 3.10.2` and `rustc 1.52.1`:
 
 | Implementation | Max RSS  | Allocs    | Frees     | Bytes allocated | Run time |
 |----------------|----------|-----------|-----------|-----------------|----------|
+| lines.rs       |  2124 KB |   277,396 |   277,394 |     104,598,961 | 0.05 sec |
 | readline.py    |  7420 KB | 1,814,409 | 1,810,434 |     475,434,838 | 0.33 sec |
 | readline.rs    |  2260 KB |   692,114 |   692,112 |     285,799,923 | 0.15 sec |
 | byteslines.rs  |  2068 KB |        24 |        22 |         265,577 | 0.12 sec |
