@@ -8,6 +8,7 @@ edition = "2018"
 
 [dependencies]
 bytes = "1.1"
+memchr = "2.4"
 
 [[bin]]
 name = "lines"
@@ -20,3 +21,7 @@ path = "readline.rs"
 [[bin]]
 name = "byteslines"
 path = "byteslines.rs"
+
+[[bin]]
+name = "byteslines-nosplit"
+path = "byteslines-ns.rs"
